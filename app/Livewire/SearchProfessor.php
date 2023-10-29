@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Professor;
+use Illuminate\Http\Request;
 use Livewire\Component;
 
 class SearchProfessor extends Component
@@ -11,7 +12,7 @@ class SearchProfessor extends Component
 
     public function render()
     {
-        $professors = collect(); // Create an empty collection
+        $professors = collect();
 
         if (!empty($this->search)) {
             $professors = Professor::where(function($query) {
@@ -33,7 +34,5 @@ class SearchProfessor extends Component
         return view('livewire.search-professor', [
             'professors' => $professors
         ]);
-
-
     }
 }

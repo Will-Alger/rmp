@@ -5,6 +5,7 @@
  */
 
 import axios from 'axios';
+import "/node_modules/select2/dist/css/select2.css";
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

@@ -1,0 +1,19 @@
+{
+  "hash": "325b2f6b",
+  "browserHash": "d1e39c9c",
+  "optimized": {
+    "alpinejs": {
+      "src": "../../node_modules/alpinejs/dist/module.esm.js",
+      "file": "alpinejs.js",
+      "fileHash": "e6c1165e",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "a5b667cf",
+      "needsInterop": false
+    }
+  },
+  "chunks": {}
+}

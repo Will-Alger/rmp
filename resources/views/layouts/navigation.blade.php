@@ -17,8 +17,8 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile')">
-                        {{ __('Profile') }}
+                    <x-nav-link :href="route('compare')" :active="request()->routeIs('compare')">
+                        {{ __('Compare') }}
                     </x-nav-link>
 
                 </div>
