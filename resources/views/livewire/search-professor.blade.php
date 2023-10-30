@@ -1,5 +1,4 @@
 <div>
-
     <div x-data="{ open: false, selected: '' }" class="relative">
         <label>
             <input
@@ -8,7 +7,7 @@
                 x-model="selected"
                 @click="open = true"
                 class="form-input mt-1 block w-full rounded max-h-60 overflow-auto"
-                placeholder="Search professors..."
+                placeholder="Search by name or id..."
             >
         </label>
         <div
@@ -18,7 +17,10 @@
             <ul class="space-y-1">
                 @foreach($professors as $p)
                     <li
-                        @click="selected = '{{ $p->firstName . ' ' . $p->lastName }}'; open = false"
+                        x-data="{
+                            professor: {{$p}}
+                        }"
+                        @click="$dispatch('selectProfessor', professor); selected = '{{ $p->firstName . ' ' . $p->lastName }}'; open = false"
                         class="px-3 py-2 hover:bg-gray-200 cursor-pointer"
                     >
                         <div>
