@@ -1,28 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight hover:text-red-800">
-{{--            {{ __('RateMyProfessor 2.0') }}--}}
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight hover:text-red-800">
+            {{ __('RateMyProfessor 2.0') }}
         </h2>
     </x-slot>
 
 <div class="flex justify-center items-center w-full">
     <div class="w-1/3 mt-20 t">
 
-        <div x-data="{ status: 'Active' }">
-            <x-select
-                    label="Select Status"
-                    placeholder="Select one status"
-                    :options="['Active', 'Pending', 'Stuck', 'Done']"
-                    wire:model.defer="model"
-            />
-        </div>
-{{--        @livewire('search-professor')--}}
+
+        @livewire('search-professor')
 
     </div>
 </div>
 </x-app-layout>
-
-
 
 <script>
     document.addEventListener('selectProfessor', (event) => {

@@ -40,7 +40,6 @@ class SearchProfessor extends Component
 
     public function selectProfessor($professor)
     {
-//        error_log("selecting professor");
         $this->selectedProfessor = $professor;
         $this->dispatch('professorSelected', $professor);
     }
