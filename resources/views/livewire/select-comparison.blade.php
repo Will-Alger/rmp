@@ -6,16 +6,13 @@
         </select>
     </label>
 
-    @if($selected === 'Professor')
-        <div class="mt-4">
-            @livewire('search-professor', ['searchType' => 'professor'])
-            <div id="selectedProfessor"></div>
-        </div>
+    <div class="mt-4">
+        @livewire('search-professor', ['searchType' => $selected === 'Professor' ? 'professor' : 'school'])
 
-    @else ($selected === 'School')
-        <div class="mt-4">
-            @livewire('search-professor', ['searchType' => 'school'])
-        </div>
-    @endif
+        @if($selected === 'Professor')
+            <div id="selectedProfessor"></div>
+        @endif
+    </div>
+
 </div>
 

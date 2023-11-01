@@ -47,7 +47,7 @@ class SearchProfessor extends Component
             } else {
                 $query->where('firstName', 'like', '%' . $this->search . '%')
                     ->orWhere('lastName', 'like', '%' . $this->search . '%')
-                    ->orWhere('legacyId', 'like', '%' . $this->search . '%');
+                    ->orWhere('legacyId', '=', '%' . $this->search . '%');
             }
         })
             ->orderBy('numRatings', 'desc')
@@ -60,23 +60,3 @@ class SearchProfessor extends Component
     }
 
 }
-
-//
-//$professors = collect();
-//if (!empty($this->search)) {
-//    $professors = Professor::where(function($query) {
-//        $terms = explode(' ', $this->search);
-//
-//        if (count($terms) > 1) {
-//            $query->where('firstName', 'like', '%' . $terms[0] . '%')
-//                ->where('lastName', 'like', '%' . $terms[1] . '%');
-//        } else {
-//            $query->where('firstName', 'like', '%' . $this->search . '%')
-//                ->orWhere('lastName', 'like', '%' . $this->search . '%')
-//                ->orWhere('legacyId', 'like', '%' . $this->search . '%');
-//        }
-//    })
-//        ->orderBy('numRatings', 'desc')
-//        ->limit(15)
-//        ->get();
-//}

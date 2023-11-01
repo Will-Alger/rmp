@@ -6,21 +6,18 @@
     </x-slot>
 
 <div class="flex justify-center items-center w-full">
-    <div class="w-1/3 mt-20 t">
-        <div>
+    <div class="mt-20 w-1/3">
             @livewire('select-comparison')
-        </div>
-
     </div>
+    <div id="selectedProfessor"></div>
 </div>
 </x-app-layout>
 
 <script>
     document.addEventListener('selectProfessor', (event) => {
-        // console.log(event.detail);
         let professor = event.detail;
         document.getElementById('selectedProfessor').innerHTML =
-            `<div class="mt-5 p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
+            `<div class="mt-5 p-6 w-full mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
             <div>
                 <div class="text-xl font-medium text-black">Professor: ${professor.firstName} ${professor.lastName}</div>
                 <p class="text-gray-500">School: ${professor.schoolName}</p>
