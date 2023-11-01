@@ -6,12 +6,12 @@ use App\Models\Professor;
 use Illuminate\Http\Request;
 use Livewire\Component;
 
-class SearchProfessor extends Component
+class Search extends Component
 {
+    public $__id;
     public $search = "";
     public $selectedProfessor = null;
     public $searchType = "professor";
-    public $selection = null;
 
     public function render()
     {
@@ -24,22 +24,22 @@ class SearchProfessor extends Component
         else if ($searchType == "school")
             $results = $this->getSchools();
 
-        return view('livewire.search-professor', [
-            'searchType' => $this->searchType, 'professors' => $results
+        return view('livewire.search', [
+            'searchType' => $this->searchType, 'results' => $results
         ]);
     }
 
-    public function select($selection): void
+    public function selectProfessor($professor)
     {
-        $this->selection = $selection;
-//        $this->dispatch('selectionMade', $selection);
+        $this->selectedProfessor = $professor;
+        $this->dispatch('professorSelected', $professor);
     }
 
     public function getProfessors($count = 15)
     {
         if (empty($this->search))
             return collect();
-        return Professor::where(function ($query) {
+        return Professor::where(function($query) {
             $terms = explode(' ', $this->search);
 
             if (count($terms) > 1) {
@@ -56,8 +56,7 @@ class SearchProfessor extends Component
             ->get();
     }
 
-    public function getSchools()
-    {
+    public function getSchools() {
         return collect();
     }
 
