@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Professor;
 
 
-class CompareController extends Controller
+class UserSearchController extends Controller
 {
     public function index()
     {
-        return view('compare');
+        return view('user_search');
     }
 }

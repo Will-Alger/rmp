@@ -7,7 +7,6 @@
     </label>
 
     <div class="mt-4">
-        @livewire('search-professor', ['searchType' => $selected === 'Professor' ? 'professor' : 'school'])
 
         @if($selected === 'Professor')
             <div id="selectedProfessor"></div>
@@ -15,4 +14,3 @@
     </div>
 
 </div>
-

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CompareController;
+use App\Http\Controllers\UserSearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/compare', [CompareController::class, 'index'])
+Route::get('/search', [UserSearchController::class, 'index'])
     ->middleware(['auth', 'verified'])
-    ->name('compare');
+    ->name('user_search');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -33,4 +33,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
