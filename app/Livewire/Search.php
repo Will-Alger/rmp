@@ -31,11 +31,13 @@ class Search extends Component
 
     public function handleSelection($id): void
     {
-        $professor = Professor::find($id);
-        error_log($id . ' was selected');
+        if ($this->searchType == "professor")
+            $this->redirect(route('professor.show', ['professor' => $id]));
+        else
+            $this->redirect(route('school.show', ['school' => $id]));
     }
 
-    public function updated($propertyName)
+    public function updated($propertyName): void
     {
         if ($propertyName === 'searchType') {
             error_log('updatedSearchType was called.');
@@ -63,7 +65,7 @@ class Search extends Component
             ->get();
     }
 
-    public function getSchools()
+    public function getSchools($count = 15)
     {
         if (empty($this->search))
             return collect();
@@ -73,7 +75,7 @@ class Search extends Component
                 ->orWhere('legacyId', '=', '%' . $this->search . '%');
         })
             ->orderBy('numRatings', 'desc')
-            ->limit(15)
+            ->limit($count)
             ->get();
     }
 }

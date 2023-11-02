@@ -37,6 +37,7 @@
                             @click="
                                 open = false;
                                 selected = '{{ $searchType === 'professor' ? $item->firstName . ' ' . $item->lastName : $item->name }}';
+
                              "
                             class="w-full px-3 py-2 hover:bg-gray-200 cursor-pointer"
                     >

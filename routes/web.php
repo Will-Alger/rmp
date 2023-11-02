@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserSearchController;
+use App\Http\Controllers\ProfessorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +23,10 @@ Route::get('/', function () {
 Route::get('/search', [UserSearchController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('user_search');
+
+Route::get('professor/{professor}', [ProfessorController::class, 'show'])
+    ->middleware(['auth', 'verified'])
+    ->name('professor.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
