@@ -88,10 +88,22 @@
                             {{ \Carbon\Carbon::parse($review->date)->format('Y-m-d') }}
                         </p>
                     </div>
-                    
+
                     {{-- Quality Ratings --}}
                     <div class="px-4 sm:px-6">
                         <div class="flex items-end space-x-4 my-2">
+
+                            <!-- Quality Rating Bar -->
+                            <div class="text-center">
+                                <div class="bg-gray-200 w-8 h-16 rounded relative">
+                                    <div class="bg-electric-violet w-full rounded absolute bottom-0"
+                                         style="height: {{ ($review->qualityRating / 5) * 100 }}%">
+                                        <span class="text-white text-xs">{{ $review->qualityRating }}</span>
+                                    </div>
+                                </div>
+                                <div class="text-sm font-medium text-gray-700 mt-1">Quality</div>
+                            </div>
+
                             <!-- Clarity Rating Bar -->
                             <div class="text-center">
                                 <div class="bg-gray-200 w-8 h-16 rounded relative">
@@ -126,8 +138,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="border-t border-gray-200 p-4">
                         <p class="text-gray-700 mb-3 p-4">{{ $review->comment }}</p>
                         @if (!empty($review->ratingTags))
