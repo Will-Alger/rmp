@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('professors', function (Blueprint $table) {
-
             $table->text('firstName');
             $table->string('lastName');
             $table->string('id')->primary();
@@ -26,6 +25,7 @@ return new class extends Migration
             $table->float('wouldTakeAgainPercent');
             $table->integer('legacyId');
             $table->timestamps();
+            $table->foreign('schoolId')->references('id')->on('schools');
         });
     }
 

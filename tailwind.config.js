@@ -14,6 +14,9 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'electric-violet': '#3B37E5'
+            }
         },
     },
 
