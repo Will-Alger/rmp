@@ -13,6 +13,12 @@ class Professor extends Model
 
     public function school(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(School::class);
+        return $this->belongsTo(School::class, 'schoolId');
     }
+
+    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Review::class, 'teacherId');
+    }
+
 }
