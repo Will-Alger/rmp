@@ -36,6 +36,7 @@ class ProfessorController extends Controller
      */
     public function show(Professor $professor)
     {
+        $professor->load('reviews');
         return view('professor.show', compact('professor'));
     }
 
