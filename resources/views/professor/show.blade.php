@@ -24,9 +24,9 @@
                             <dd class="mt-1">
                                 <div class="bg-gray-200 rounded h-6 w-full overflow-hidden">
                                     <div class="bg-electric-violet rounded h-6 flex justify-center items-center"
-                                         style="width: {{ $professor->avgRating / 5 * 100 }}%;">
+                                         style="width: {{ $professor->avgQualityRating() / 5 * 100 }}%;">
                                         <span class="text-xs font-medium text-white">
-                                            {{ number_format($professor->avgRating, 1) }} / 5
+                                            {{ $professor->avgQualityRating() }} / 5
                                         </span>
                                     </div>
                                 </div>
@@ -42,9 +42,9 @@
                             <dd class="mt-1">
                                 <div class="bg-gray-200 rounded h-6 w-full overflow-hidden">
                                     <div class="bg-electric-violet rounded h-6 flex justify-center items-center"
-                                         style="width: {{ $professor->avgDifficulty / 5 * 100 }}%;">
+                                         style="width: {{ $professor->avgDifficultyRating() / 5 * 100 }}%;">
                                         <span class="text-xs font-medium text-white">
-                                            {{ number_format($professor->avgDifficulty, 1) }} / 5
+                                            {{ $professor->avgDifficultyRating() }} / 5
                                         </span>
                                     </div>
                                 </div>
@@ -59,9 +59,9 @@
                             <dd class="mt-1">
                                 <div class="bg-gray-200 rounded h-6 w-full overflow-hidden">
                                     <div class="bg-electric-violet rounded h-6 flex justify-center items-center"
-                                         style="width: {{ $professor->wouldTakeAgainPercent }}%;">
+                                         style="width: {{ $professor->avgWouldTakeAgain() }}%;">
                                         <span class="text-xs font-medium text-white">
-                                            {{ number_format($professor->wouldTakeAgainPercent, 0) }}%
+                                            {{ $professor->avgWouldTakeAgain() }}%
                                         </span>
                                     </div>
                                 </div>
@@ -70,6 +70,15 @@
                     </dl>
                 </div>
             </div>
+
+            <div class="p-4 rounded shadow-lg flex">
+                <div class="w-1/2 h-[40vh] max-w-2xl p-4 bg-white rounded shadow">
+                    {!! $chart->container() !!}
+                </div>
+            </div>
+
+            {!! $chart->script() !!}
+
         </div>
 
         <!-- Reviews Section -->

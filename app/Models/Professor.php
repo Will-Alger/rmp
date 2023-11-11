@@ -21,4 +21,18 @@ class Professor extends Model
         return $this->hasMany(Review::class, 'teacherId');
     }
 
+    public function avgQualityRating()
+    {
+        return round($this->reviews()->avg('qualityRating'), 1);
+    }
+
+    public function avgDifficultyRating()
+    {
+        return round($this->reviews()->avg('difficultyRating'), 1);
+    }
+
+    public function avgWouldTakeAgain()
+    {
+        return round($this->reviews()->avg('wouldTakeAgain') * 100, 0);
+    }
 }

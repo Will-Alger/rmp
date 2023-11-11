@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Professor;
 use Illuminate\Http\Request;
+use App\Charts\ReviewTrend;
 
 class ProfessorController extends Controller
 {
@@ -37,7 +38,51 @@ class ProfessorController extends Controller
     public function show(Professor $professor)
     {
         $professor->load('reviews');
-        return view('professor.show', compact('professor'));
+
+        $datesAndRatings = $professor->reviews()->orderBy('date')->get();
+
+        $labels = [];
+        $averageQualityRatings = [];
+        $runningTotal = 0;
+
+        foreach ($datesAndRatings as $index => $review) {
+            $runningTotal += (float)$review->qualityRating;
+            $averageQualityRatings[] = $runningTotal / ($index + 1); // calculating average
+            $labels[] = \Carbon\Carbon::parse($review->date)->format('Y-m');
+        }
+
+        $chart = new ReviewTrend;
+
+        $chart->labels($labels);
+        $dataset = $chart->dataset('Quality Trend', 'line', $averageQualityRatings)
+            ->fill(true)
+            ->options([
+                'pointRadius' => 0,
+            ]);
+        $dataset->color('#1F1BCE');
+
+        $chart->options([
+            'animation' => [
+                'easing' => 'easeInCubic',
+                'duration' => 2000,
+            ],
+            'scales' => [
+                'yAxes' => [
+                    [
+                        'ticks' => [
+                            'min' => 1,
+                            'max' => 5,
+                        ]
+                    ]
+                ]
+            ],
+            'tooltips' => [
+                'mode' => 'index',
+                'intersect' => false,
+            ],
+        ]);
+
+        return view('professor.show', compact('professor', 'chart'));
     }
 
     /**
