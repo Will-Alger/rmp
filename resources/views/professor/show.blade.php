@@ -41,7 +41,7 @@
                             </dt>
                             <dd class="mt-1">
                                 <div class="bg-gray-200 rounded h-6 w-full overflow-hidden">
-                                    <div class="bg-electric-violet rounded h-6 flex justify-center items-center"
+                                    <div class="bg-gumball-pink rounded h-6 flex justify-center items-center"
                                          style="width: {{ $professor->avgDifficultyRating() / 5 * 100 }}%;">
                                         <span class="text-xs font-medium text-white">
                                             {{ $professor->avgDifficultyRating() }} / 5
@@ -86,7 +86,7 @@
             <h3 class="text-xl leading-6 font-bold text-gray-900">
                 Reviews
             </h3>
-            @forelse ($professor->reviews as $review)
+            @forelse ($reviews as $review)
                 <div class="bg-white shadow rounded-lg overflow-hidden my-4">
 
                     <div class="px-4 py-5 sm:px-6 bg-gray-50 flex justify-between items-center">
@@ -127,7 +127,7 @@
                             <!-- Difficulty Rating Bar -->
                             <div class="text-center">
                                 <div class="bg-gray-200 w-8 h-16 rounded relative">
-                                    <div class="bg-electric-violet w-full rounded absolute bottom-0"
+                                    <div class="bg-gumball-pink w-full rounded absolute bottom-0"
                                          style="height: {{ ($review->difficultyRating / 5) * 100 }}%">
                                         <span class="text-white text-xs">{{ $review->difficultyRating }}</span>
                                     </div>
@@ -176,6 +176,7 @@
             @empty
                 <p class="text-gray-700">No reviews available.</p>
             @endforelse
+            {{ $reviews->links() }}
         </div>
 
 

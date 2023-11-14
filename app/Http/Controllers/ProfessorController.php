@@ -37,29 +37,48 @@ class ProfessorController extends Controller
      */
     public function show(Professor $professor)
     {
-        $professor->load('reviews');
-
-        $datesAndRatings = $professor->reviews()->orderBy('date')->get();
+        $reviews = $professor->reviews()->orderBy('date')->paginate(10);
 
         $labels = [];
         $averageQualityRatings = [];
-        $runningTotal = 0;
+        $averageDifficultyRatings = [];
+        $qualityRunningTotal = 0;
+        $difficultyRunningTotal = 0;
+        $counter = 1;
 
-        foreach ($datesAndRatings as $index => $review) {
-            $runningTotal += (float)$review->qualityRating;
-            $averageQualityRatings[] = $runningTotal / ($index + 1); // calculating average
-            $labels[] = \Carbon\Carbon::parse($review->date)->format('Y-m');
-        }
+        $professor->reviews()->orderBy('date')->chunk(200, function ($reviews) use (&$qualityRunningTotal, &$difficultyRunningTotal, &$counter, &$labels, &$averageQualityRatings, &$averageDifficultyRatings) {
+            foreach ($reviews as $review) {
+
+                $qualityRunningTotal += (float)$review->qualityRating;
+
+                $difficultyRunningTotal += (float)$review->difficultyRating;
+
+                $temp = $counter++;
+                $averageQualityRatings[] = $qualityRunningTotal / $temp;
+
+                $averageDifficultyRatings[] = $difficultyRunningTotal / $temp;
+
+
+                $labels[] = \Carbon\Carbon::parse($review->date)->format('Y-m');
+            }
+        });
 
         $chart = new ReviewTrend;
 
         $chart->labels($labels);
-        $dataset = $chart->dataset('Quality Trend', 'line', $averageQualityRatings)
+        $qualityDataSet = $chart->dataset('Quality Trend', 'line', $averageQualityRatings)
             ->fill(true)
             ->options([
                 'pointRadius' => 0,
             ]);
-        $dataset->color('#1F1BCE');
+        $qualityDataSet->color('#3B37E5');
+
+        $difficultyDataSet = $chart->dataset('Difficulty Trend', 'line', $averageDifficultyRatings)
+            ->fill(true)
+            ->options([
+                'pointRadius' => 0,
+            ]);
+        $difficultyDataSet->color('#E6378B');
 
         $chart->options([
             'animation' => [
@@ -82,7 +101,7 @@ class ProfessorController extends Controller
             ],
         ]);
 
-        return view('professor.show', compact('professor', 'chart'));
+        return view('professor.show', compact('professor', 'chart', 'reviews'));
     }
 
     /**
