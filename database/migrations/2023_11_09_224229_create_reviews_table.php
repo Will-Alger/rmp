@@ -36,7 +36,7 @@ return new class extends Migration
                 $table->integer('wouldTakeAgain')->nullable();
                 $table->string('teacherId', 255)->nullable();
                 $table->float('qualityRating')->nullable();
-                // Include created_at and updated_at timestamps if they
+
                 $table->foreign('teacherId')->references('id')->on('professors');
                 $table->timestamps();
             });
