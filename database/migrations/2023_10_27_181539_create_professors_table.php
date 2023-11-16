@@ -18,7 +18,7 @@ return new class extends Migration
                 $table->string('id', 255)->primary();
                 $table->string('typename');
                 $table->string('schoolName');
-                $table->string('schoolId');
+                $table->string('schoolId', 255);
                 $table->integer('numRatings');
                 $table->float('avgDifficulty');
                 $table->float('avgRating');
