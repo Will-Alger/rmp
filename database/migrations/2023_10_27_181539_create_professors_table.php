@@ -11,22 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('professors', function (Blueprint $table) {
-            $table->text('firstName');
-            $table->string('lastName');
-            $table->string('id')->primary();
-            $table->string('typename');
-            $table->string('schoolName');
-            $table->string('schoolId');
-            $table->integer('numRatings');
-            $table->float('avgDifficulty');
-            $table->float('avgRating');
-            $table->string('department');
-            $table->float('wouldTakeAgainPercent');
-            $table->integer('legacyId');
-            $table->timestamps();
-            $table->foreign('schoolId')->references('id')->on('schools');
-        });
+        if (!Schema::hasTable('professors')) {
+            Schema::create('professors', function (Blueprint $table) {
+                $table->text('firstName');
+                $table->string('lastName');
+                $table->string('id')->primary();
+                $table->string('typename');
+                $table->string('schoolName');
+                $table->string('schoolId');
+                $table->integer('numRatings');
+                $table->float('avgDifficulty');
+                $table->float('avgRating');
+                $table->string('department');
+                $table->float('wouldTakeAgainPercent');
+                $table->integer('legacyId');
+                $table->timestamps();
+                $table->foreign('schoolId')->references('id')->on('schools');
+            });
+        }
     }
 
 
