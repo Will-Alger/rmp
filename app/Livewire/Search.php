@@ -102,9 +102,11 @@ class Search extends Component
         if (empty($this->search))
             return collect();
 
+        $terms = array_filter(explode(' ', $this->search));
+
         $searchTerms = implode(" ", array_map(function ($term) {
             return "+" . $term . "*";
-        }, explode(' ', $this->search)));
+        }, $terms));
 
         return Professor::select(['id', 'firstName', 'lastName', 'schoolName', 'numRatings'])
             ->whereRaw(
