@@ -37,7 +37,7 @@ class ProfessorController extends Controller
      */
     public function show(Professor $professor)
     {
-        $reviews = $professor->reviews()->orderBy('date')->paginate(10);
+        $reviews = $professor->reviews()->orderByDesc('date')->paginate(10);
 
         $labels = [];
         $averageQualityRatings = [];
