@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "start": "concurrently \"ssh -L 3307:10.116.0.2:3306 forge@159.89.229.40\" \"php artisan config:cache\" \"php artisan serve\" \"npm run dev\""
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",
