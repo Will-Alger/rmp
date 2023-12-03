@@ -1,6 +1,6 @@
-import './bootstrap';
-
-import Alpine from 'alpinejs';
+import "./bootstrap";
+import "chartjs-plugin-streaming";
+import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
 

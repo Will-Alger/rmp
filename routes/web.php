@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserSearchController;
 use App\Http\Controllers\ProfessorController;
+use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+Route::get('/', [LandingController::class, 'index']);
+
 
 Route::get('/search', [UserSearchController::class, 'index'])
     ->middleware(['auth', 'verified'])
