@@ -4,7 +4,6 @@
             background-color: rgba(12, 12, 13, 1); /* Dark charcoal color */
         }
 
-
     </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2"></script>
 <script src="https://cdn.jsdelivr.net/npm/luxon@1.27.0"></script>
@@ -39,16 +38,32 @@
         });
     }
     const backgroundPlugin = {
-        id: 'customCanvasBackgroundColor',
-        beforeDraw: (chart) => {
-            const ctx = chart.ctx;
-            const {top, left, width, height} = chart.chartArea;
-            ctx.save();
-            ctx.fillStyle = 'rgba(12, 12, 13, 1)';
-            ctx.fillRect(left, top, width, height);
-            ctx.restore();
+    id: 'customCanvasBackgroundColor',
+    beforeDraw: (chart) => {
+        const ctx = chart.ctx;
+        const {top, left, width, height} = chart.chartArea;
+
+        ctx.save();
+        ctx.fillStyle = 'rgba(12, 12, 13, 1)';
+        ctx.fillRect(left, top, width, height);
+
+        const dotSize = 0.5;
+        const spacing = 50;
+
+        ctx.fillStyle = '#FFFFFF';
+
+        for (let x = left; x <= left + width; x += spacing) {
+            for (let y = top; y <= top + height; y += spacing) {
+                ctx.beginPath();
+                ctx.arc(x, y, dotSize, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
-    };
+
+        ctx.restore();
+    }
+};
+
     const glowPlugin = {
         id: 'glowEffect',
         beforeDatasetDraw: (chart, args) => {
@@ -70,6 +85,7 @@
                 data: initialData,
                 borderColor: '#00c0ef',
                 fill: true,
+                pointRadius: 0,
                 backgroundColor: (context) => {
                 const chart = context.chart;
                 const {ctx, chartArea} = chart;
@@ -88,6 +104,7 @@
             data: secondData,
             borderColor: '#00ff00',
             fill: true,
+            pointRadius: 0,
             backgroundColor: (context) => {
                 const chart = context.chart;
                 const {ctx, chartArea} = chart;
@@ -110,10 +127,16 @@
             plugins: {
                 legend: {
                     display: false
+                },
+                tooltip: {
+                    enabled: false
                 }
             },
             scales: {
                 x: {
+                    grid: {
+                        display: false
+                    },
                     ticks: {
                         display: false,
                     },
@@ -136,6 +159,9 @@
                 },
                 y: {
                     type: 'linear',
+                    grid: {
+                        display: false
+                    },
                     ticks: {
                         display: false,
                     },
