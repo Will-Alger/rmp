@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     var ctx = document.getElementById("myChart").getContext("2d");
     var initialData = [];
     var secondData = [];
-    const initialDuration = window.innerWidth > 768 ? 90000 : 20000;
+    const initialDuration = window.innerWidth > 768 ? 90000 : 25000;
     for (var i = 0; i < 18; i++) {
         initialData.push({
             x: Date.now() - (18 - i) * 10000,
@@ -156,6 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
                 },
                 y: {
+                    min: 1,
+                    max: 5,
                     beginAtZero: true,
                     type: "linear",
                     grid: {
