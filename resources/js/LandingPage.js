@@ -8,13 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
     var ctx = document.getElementById("myChart").getContext("2d");
     var initialData = [];
     var secondData = [];
-    const initialDuration = window.innerWidth > 768 ? 90000 : 25000;
     for (var i = 0; i < 18; i++) {
         initialData.push({
             x: Date.now() - (18 - i) * 10000,
             y: Math.random() * (5 - 1) + 1,
         });
-
         secondData.push({
             x: Date.now() - (18 - i) * 10000,
             y: Math.random() * (5 - 1) + 1,
@@ -137,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     type: "realtime",
                     beginAtZero: true,
                     realtime: {
-                        duration: initialDuration,
+                        duration: 25000,
                         refresh: 2000,
                         delay: 2000,
                         onRefresh: function (chart) {
