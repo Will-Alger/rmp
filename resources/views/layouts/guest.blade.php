@@ -16,11 +16,6 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
             <div class="landing-chart-container absolute top-0 left-0 w-full h-screen">
                 <canvas id="myChart" class="w-full h-screen m-0 p-0" style="background-color: rgba(12, 12, 13, 1);"></canvas>
             </div>
