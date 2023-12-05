@@ -21,10 +21,13 @@
                     <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
                 </a>
             </div>
-
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="landing-chart-container absolute top-0 left-0 w-full h-screen">
+                <canvas id="myChart" class="w-full h-screen m-0 p-0" style="background-color: rgba(12, 12, 13, 1);"></canvas>
+            </div>
+            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg relative z-10">
                 {{ $slot }}
             </div>
         </div>
+        @vite('resources/js/LandingPage.js')
     </body>
 </html>
