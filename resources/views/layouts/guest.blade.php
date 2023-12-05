@@ -7,22 +7,22 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
+    @php
+        use Jenssegers\Agent\Agent;
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
+    @endphp
     <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div class="landing-chart-container absolute top-0 left-0 w-full h-screen">
-                <canvas id="myChart" class="w-full h-screen m-0 p-0" style="background-color: rgba(12, 12, 13, 1);"></canvas>
-            </div>
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg relative z-10">
-                {{ $slot }}
-            </div>
-        </div>
+        @if ($isMobile)
+            @include('partials.landing_mobile')
+        @else
+            @include('partials.landing_desktop')
+        @endif
         @vite('resources/js/LandingPage.js')
     </body>
 </html>

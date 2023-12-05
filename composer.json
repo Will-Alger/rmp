@@ -9,6 +9,7 @@
         "consoletvs/charts": "6.*",
         "doctrine/dbal": "^3.7",
         "guzzlehttp/guzzle": "^7.2",
+        "jenssegers/agent": "^2.6",
         "laravel/breeze": "^1.25",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
