@@ -5,12 +5,9 @@
             <option>School</option>
         </select>
     </label>
-
     <div class="mt-4">
-
         @if($selected === 'Professor')
             <div id="selectedProfessor"></div>
         @endif
     </div>
-
 </div>
