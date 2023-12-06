@@ -38,69 +38,7 @@ class ProfessorController extends Controller
     public function show(Professor $professor)
     {
         $reviews = $professor->reviews()->orderByDesc('date')->paginate(10);
-
-        $labels = [];
-        $averageQualityRatings = [];
-        $averageDifficultyRatings = [];
-        $qualityRunningTotal = 0;
-        $difficultyRunningTotal = 0;
-        $counter = 1;
-
-        $professor->reviews()->orderBy('date')->chunk(200, function ($reviews) use (&$qualityRunningTotal, &$difficultyRunningTotal, &$counter, &$labels, &$averageQualityRatings, &$averageDifficultyRatings) {
-            foreach ($reviews as $review) {
-
-                $qualityRunningTotal += (float)$review->qualityRating;
-
-                $difficultyRunningTotal += (float)$review->difficultyRating;
-
-                $temp = $counter++;
-                $averageQualityRatings[] = $qualityRunningTotal / $temp;
-
-                $averageDifficultyRatings[] = $difficultyRunningTotal / $temp;
-
-
-                $labels[] = \Carbon\Carbon::parse($review->date)->format('Y-m');
-            }
-        });
-
-        $chart = new ReviewTrend;
-
-        $chart->labels($labels);
-        $qualityDataSet = $chart->dataset('Quality Trend', 'line', $averageQualityRatings)
-            ->fill(true)
-            ->options([
-                'pointRadius' => 0,
-            ]);
-        $qualityDataSet->color('#3B37E5');
-
-        $difficultyDataSet = $chart->dataset('Difficulty Trend', 'line', $averageDifficultyRatings)
-            ->fill(true)
-            ->options([
-                'pointRadius' => 0,
-            ]);
-        $difficultyDataSet->color('#E6378B');
-
-        $chart->options([
-            'animation' => [
-                'easing' => 'easeInCubic',
-                'duration' => 2000,
-            ],
-            'scales' => [
-                'yAxes' => [
-                    [
-                        'ticks' => [
-                            'min' => 1,
-                            'max' => 5,
-                        ]
-                    ]
-                ]
-            ],
-            'tooltips' => [
-                'mode' => 'index',
-                'intersect' => false,
-            ],
-        ]);
-
+        $chart = new ReviewTrend($professor);
         return view('professor.show', compact('professor', 'chart', 'reviews'));
     }
 
