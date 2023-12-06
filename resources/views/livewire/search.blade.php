@@ -45,9 +45,10 @@
                             <div>{{ $searchType === 'professor' ? $item->firstName . ' ' . $item->lastName : $item->name }}</div>
                             <div class="flex-grow"></div>
                             <div>
-                                <span class="inline-block bg-electric-violet text-white px-2 py-1 rounded text-sm"> {{ $item->numRatings }} Ratings</span>
                                 @if ($searchType === 'professor')
-                                    <span class="inline-block bg-electric-violet text-white px-2 py-1 rounded text-sm ml-2">{{ $item->schoolName }}</span>
+                                    <span class="inline-block bg-accent-primary text-white px-2 py-1 rounded text-sm ml-2">{{ $item->schoolName }}</span>
+                                @else
+                                    <span class="inline-block bg-accent-primary text-white px-2 py-1 rounded text-sm"> {{ $item->numRatings }} Ratings</span>
                                 @endif
                             </div>
                         </div>
