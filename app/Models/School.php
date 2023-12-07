@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use \Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Model;
 
 class School extends Model
@@ -15,7 +16,7 @@ class School extends Model
         return $this->hasMany(Professor::class, 'schoolId', 'id');
     }
 
-    public function professorReviews(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    public function professorReviews(): HasManyThrough
     {
         return $this->hasManyThrough(
             Review::class,

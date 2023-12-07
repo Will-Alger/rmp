@@ -12,8 +12,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $school = School::where('name', 'Northern Kentucky University')->orderBy('numRatings', 'desc')->first();
-        $chart = new SchoolTrend($school);
+        $schools = School::where('state', 'KY')
+            ->where('name', '=', "University of Louisville")
+            ->orderBy('numRatings', 'desc')
+            ->take(1)
+            ->get();
+
+
+        $chart = new SchoolTrend($schools);
         return view('dashboard', compact('chart'));
     }
 }

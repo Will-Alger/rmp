@@ -3,8 +3,10 @@
 namespace App\Charts;
 
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use App\Models\School;
+use App\Models\Review;
 use Carbon\Carbon;
 
 class SchoolTrend extends Chart
@@ -14,23 +16,32 @@ class SchoolTrend extends Chart
      *
      * @return void
      */
-    public function __construct(School $school)
+    public function __construct(Collection $schools)
     {
         parent::__construct();
 
         $year = Carbon::now()->year;
-        $cacheKey = "school_quality_trend_{$school->id}_{$year}";
-        $cacheDuration = Carbon::now()->addMonth();
+        $labelsSet = false;
 
-        [$labels, $monthlyRatings] = Cache::remember($cacheKey, $cacheDuration, function () use ($school, $year) {
-            return $this->calculateQualityTrend($school, $year);
-        });
+        foreach ($schools as $school) {
+            $cacheKey = "school_quality_trend_{$school->id}_{$year}";
+            $cacheDuration = Carbon::now()->addMonth();
 
-        $this->labels($labels);
-        $this->dataset("{$school->name}", 'line', $monthlyRatings)
-            ->fill(true)
-            ->color('#3B37E5')
-            ->options(['pointRadius' => 0]);
+            [$labels, $monthlyRatings] = Cache::remember($cacheKey, $cacheDuration, function () use ($school, $year) {
+                return $this->calculateQualityTrend($school, $year);
+            });
+
+            // Set labels only once based on the first school's data
+            if (!$labelsSet) {
+                $this->labels($labels);
+                $labelsSet = true;
+            }
+
+            $this->dataset($school->name, 'line', $monthlyRatings)
+                ->fill(true)
+                ->color($this->getRandomColor()) // Method to generate a random color
+                ->options(['pointRadius' => 0]);
+        }
 
         $this->options([
             'scales' => [
@@ -44,6 +55,13 @@ class SchoolTrend extends Chart
                 ],
             ],
         ]);
+    }
+
+    private function getRandomColor()
+    {
+        // Method to generate a random color for each dataset
+        // This is just an example. Adjust the implementation as needed.
+        return '#' . substr(md5(rand()), 0, 6);
     }
 
     /**
@@ -63,7 +81,19 @@ class SchoolTrend extends Chart
         $runningTotal = 0;
         $counter = 0;
 
-        $reviews = $school->professorReviews()
+
+        // $reviews = $school->professorReviews()
+        //     ->whereYear('date', $year)
+        //     ->orderBy('date')
+        //     ->get();
+        $computerScienceProfessors = $school->professors()
+            ->where('department', 'Computer Science')
+
+            ->get();
+
+        $professorIds = $computerScienceProfessors->pluck('id');
+
+        $reviews = Review::whereIn('teacherId', $professorIds)
             ->whereYear('date', $year)
             ->orderBy('date')
             ->get();
