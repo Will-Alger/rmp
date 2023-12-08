@@ -27,4 +27,11 @@ class School extends Model
             'id'
         );
     }
+    public static function findBy(string $name, string $state): ?School
+    {
+        return self::where('name', '=', "{$name}")
+            ->where('state', $state)
+            ->orderBy('numRatings', 'desc')
+            ->first();
+    }
 }

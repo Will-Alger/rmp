@@ -4,22 +4,53 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Professor;
 use App\Models\School;
-use App\Charts\SchoolTrend;
+use App\Charts\QualityTrend;
+use App\Helpers\ReviewHelper;
+use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $schools = School::where('state', 'KY')
-            ->where('name', '=', "University of Louisville")
-            ->orderBy('numRatings', 'desc')
-            ->take(1)
-            ->get();
+        // $EKU = School::findBy('University of Louisville', 'KY');
+        // $EKU_reviews = $helper->getReviews($EKU->id, 2023);
+        // $calculated_reviews = $helper->calculateQualityTrend($EKU_reviews);
 
+        // $chart = new SchoolTrend($calculated_reviews, $EKU->name);
+        // return view('dashboard', compact('chart'));
+        // $charts = [];
+        // $schools = School::where('state', 'KY')
+        //     ->orderBy('numRatings', 'desc')
+        //     ->limit(5)
+        //     ->get();
 
-        $chart = new SchoolTrend($schools);
-        return view('dashboard', compact('chart'));
+        // foreach ($schools as $school) {
+        //     $school_reviews = $helper->getReviews($school->id, 2023);
+        //     $calculated_reviews = $helper->calculateQualityTrend($school_reviews);
+        //     $chart = new SchoolTrend($calculated_reviews, $school->name);
+        //     $charts[$school->name] = $chart;
+        // }
+
+        // return view('dashboard', compact('charts'));
+        $charts = Cache::remember('all_school_quality_charts', Carbon::now()->addMonth(), function () {
+            $helper = new ReviewHelper();
+            $schools = School::where('state', 'KY')
+                ->orderBy('numRatings', 'desc')
+                ->limit(6)
+                ->get();
+
+            $charts = [];
+            foreach ($schools as $school) {
+                $school_reviews = $helper->getReviews($school->id, 2023, "Computer Science");
+                $calculated_reviews = $helper->calculateQualityTrend($school_reviews);
+                $charts[$school->name] = new QualityTrend($calculated_reviews, $school->name);
+            }
+
+            return $charts;
+        });
+
+        return view('dashboard', compact('charts'));
     }
 }
