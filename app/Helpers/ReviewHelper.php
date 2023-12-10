@@ -28,47 +28,12 @@ class ReviewHelper
             ->get();
     }
 
-
-
-
-    // public function calculateQualityTrend(Collection $reviews)
-    // {
-    //     $labels = [];
-    //     $monthlyRatings = [];
-    //     $runningTotal = 0;
-    //     $counter = 0;
-
-    //     $currentMonth = null;
-    //     foreach ($reviews as $review) {
-    //         $month = Carbon::parse($review->date)->format('Y-m');
-    //         if ($review->qualityRating !== null) {
-    //             $runningTotal += (float)$review->qualityRating;
-    //             $counter++;
-    //         }
-
-    //         if ($currentMonth !== $month) {
-    //             if ($currentMonth !== null) {
-    //                 $monthlyRatings[] = number_format($runningTotal / $counter, 2);
-    //             }
-    //             $labels[] = $month;
-    //             $currentMonth = $month;
-    //         }
-    //     }
-    //     if ($currentMonth !== null && $counter > 0) {
-    //         $monthlyRatings[] = number_format($runningTotal / $counter, 2);
-    //     }
-    //     $currentMonthNumber = Carbon::now()->month;
-    //     while (count($monthlyRatings) < $currentMonthNumber) {
-    //         $monthlyRatings[] = end($monthlyRatings) ?: 0;
-    //     }
-    //     return $monthlyRatings;
-    // }
     public function calculateQualityTrend(Collection $reviews, array $labels)
     {
         $monthlyRatings = [];
         $runningTotal = 0;
         $counter = 0;
-        $previousAverage = 0; // Initialize previous month's average
+        $previousAverage = 0;
 
         foreach ($labels as $label) {
             $hasReviews = false;
@@ -85,13 +50,11 @@ class ReviewHelper
             if ($hasReviews) {
                 $average = number_format($runningTotal / $counter, 2);
                 $monthlyRatings[] = $average;
-                $previousAverage = $average; // Update previous month's average
+                $previousAverage = $average;
             } else {
-                $monthlyRatings[] = $previousAverage; // Use previous average if no reviews
+                $monthlyRatings[] = $previousAverage;
             }
         }
-
         return $monthlyRatings;
     }
 }
-  // return [$labels, $monthlyRatings];
