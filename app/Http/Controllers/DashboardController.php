@@ -34,23 +34,37 @@ class DashboardController extends Controller
         // }
 
         // return view('dashboard', compact('charts'));
-        $charts = Cache::remember('all_school_quality_charts', Carbon::now()->addMonth(), function () {
+        $universityAverageCharts = Cache::remember('all_school_quality_charts', Carbon::now()->addMonth(), function () {
             $helper = new ReviewHelper();
             $schools = School::where('state', 'KY')
                 ->orderBy('numRatings', 'desc')
                 ->limit(6)
                 ->get();
+            $universityAverageCharts = [];
+            foreach ($schools as $school) {
+                $school_reviews = $helper->getReviews($school->id, 2023);
+                $calculated_reviews = $helper->calculateQualityTrend($school_reviews);
+                $universityAverageCharts[$school->name] = new QualityTrend($calculated_reviews, $school->name, '#39C298');
+            }
+            return $universityAverageCharts;
+        });
 
-            $charts = [];
+        $departmentAverageCharts = Cache::remember('department_school_quality_charts', Carbon::now()->addMonth(), function () {
+            $helper = new ReviewHelper();
+            $schools = School::where('state', 'KY')
+                ->orderBy('numRatings', 'desc')
+                ->limit(6)
+                ->get();
+            $departmentAverageCharts = [];
             foreach ($schools as $school) {
                 $school_reviews = $helper->getReviews($school->id, 2023, "Computer Science");
                 $calculated_reviews = $helper->calculateQualityTrend($school_reviews);
-                $charts[$school->name] = new QualityTrend($calculated_reviews, $school->name);
+                $departmentAverageCharts[$school->name] = new QualityTrend($calculated_reviews, $school->name, '#F80053');
             }
-
-            return $charts;
+            return $departmentAverageCharts;
         });
 
-        return view('dashboard', compact('charts'));
+
+        return view('dashboard', compact('universityAverageCharts', 'departmentAverageCharts'));
     }
 }

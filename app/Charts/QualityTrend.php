@@ -19,29 +19,26 @@ class QualityTrend extends Chart
     public function __construct(array $calculated_reviews, string $name, string $dataColor = null)
     {
         parent::__construct();
-        $this->labels = $calculated_reviews[0];
+        $this->labels = collect($calculated_reviews[0])->map(function ($label) {
+            return Carbon::parse($label)->format('m');
+        })->toArray();
         $reviews = $calculated_reviews[1];
-
-        // foreach ($schools as $school) {
-        //     $cacheKey = "school_quality_trend_{$school->id}_{$year}";
-        //     $cacheDuration = Carbon::now()->addMonth();
-
-        //     [$labels, $monthlyRatings] = Cache::remember($cacheKey, $cacheDuration, function () use ($school, $year) {
-        //         return $this->calculateQualityTrend($school, $year);
-        //     });
-
-        //     // Set labels only once based on the first school's data
-        //     if (!$labelsSet) {
-        //         $this->labels($labels);
-        //         $labelsSet = true;
-        //     }
 
         $this->dataset("{$name}", 'line', $reviews)
             ->fill(true)
             ->color($dataColor ?? $this->getRandomColor())
+
             ->options(['pointRadius' => 0]);
 
         $this->options([
+            'legend' => [
+                'display' => false,
+            ],
+            'layout' => [
+                'padding' => [
+                    'left' => 5 // Adjust the number to increase or decrease padding
+                ],
+            ],
             'scales' => [
                 'yAxes' => [
                     [
