@@ -34,37 +34,61 @@ class DashboardController extends Controller
         // }
 
         // return view('dashboard', compact('charts'));
-        $universityAverageCharts = Cache::remember('all_school_quality_charts', Carbon::now()->addMonth(), function () {
-            $helper = new ReviewHelper();
+        // $universityAverageCharts = Cache::remember('all_school_quality_charts', Carbon::now()->addMonth(), function () {
+        //     $helper = new ReviewHelper();
+        //     $schools = School::where('state', 'KY')
+        //         ->orderBy('numRatings', 'desc')
+        //         ->limit(6)
+        //         ->get();
+        //     $universityAverageCharts = [];
+        //     foreach ($schools as $school) {
+        //         $school_reviews = $helper->getReviews($school->id, 2023);
+        //         $calculated_reviews = $helper->calculateQualityTrend($school_reviews);
+        //         $universityAverageCharts[$school->name] = new QualityTrend($calculated_reviews, $school->name, '#39C298');
+        //     }
+        //     return $universityAverageCharts;
+        // });
+
+        // $departmentAverageCharts = Cache::remember('department_school_quality_charts', Carbon::now()->addMonth(), function () {
+        //     $helper = new ReviewHelper();
+        //     $schools = School::where('state', 'KY')
+        //         ->orderBy('numRatings', 'desc')
+        //         ->limit(6)
+        //         ->get();
+        //     $departmentAverageCharts = [];
+        //     foreach ($schools as $school) {
+        //         $school_reviews = $helper->getReviews($school->id, 2023, "Computer Science");
+        //         $calculated_reviews = $helper->calculateQualityTrend($school_reviews);
+        //         $departmentAverageCharts[$school->name] = new QualityTrend($calculated_reviews, $school->name, '#F80053');
+        //     }
+        //     return $departmentAverageCharts;
+        // });
+
+
+        $schoolAverages = Cache::remember('university_school_quality_charts', Carbon::now()->addMonth(), function () {
             $schools = School::where('state', 'KY')
                 ->orderBy('numRatings', 'desc')
                 ->limit(6)
                 ->get();
-            $universityAverageCharts = [];
-            foreach ($schools as $school) {
-                $school_reviews = $helper->getReviews($school->id, 2023);
-                $calculated_reviews = $helper->calculateQualityTrend($school_reviews);
-                $universityAverageCharts[$school->name] = new QualityTrend($calculated_reviews, $school->name, '#39C298');
-            }
-            return $universityAverageCharts;
+            return new QualityTrend($schools);
         });
 
-        $departmentAverageCharts = Cache::remember('department_school_quality_charts', Carbon::now()->addMonth(), function () {
-            $helper = new ReviewHelper();
+        $computerScienceAverages = Cache::remember('computer_science_quality_charts', Carbon::now()->addMonth(), function () {
             $schools = School::where('state', 'KY')
                 ->orderBy('numRatings', 'desc')
                 ->limit(6)
                 ->get();
-            $departmentAverageCharts = [];
-            foreach ($schools as $school) {
-                $school_reviews = $helper->getReviews($school->id, 2023, "Computer Science");
-                $calculated_reviews = $helper->calculateQualityTrend($school_reviews);
-                $departmentAverageCharts[$school->name] = new QualityTrend($calculated_reviews, $school->name, '#F80053');
-            }
-            return $departmentAverageCharts;
+            return new QualityTrend($schools, "Computer Science");
         });
 
+        $englishAverages = Cache::remember('english_quality_charts', Carbon::now()->addMonth(), function () {
+            $schools = School::where('state', 'KY')
+                ->orderBy('numRatings', 'desc')
+                ->limit(6)
+                ->get();
+            return new QualityTrend($schools, "English");
+        });
 
-        return view('dashboard', compact('universityAverageCharts', 'departmentAverageCharts'));
+        return view('dashboard', compact('schoolAverages', 'computerScienceAverages', 'englishAverages'));
     }
 }

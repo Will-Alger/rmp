@@ -31,49 +31,67 @@ class ReviewHelper
 
 
 
-    public function calculateQualityTrend(Collection $reviews)
+    // public function calculateQualityTrend(Collection $reviews)
+    // {
+    //     $labels = [];
+    //     $monthlyRatings = [];
+    //     $runningTotal = 0;
+    //     $counter = 0;
+
+    //     $currentMonth = null;
+    //     foreach ($reviews as $review) {
+    //         $month = Carbon::parse($review->date)->format('Y-m');
+    //         if ($review->qualityRating !== null) {
+    //             $runningTotal += (float)$review->qualityRating;
+    //             $counter++;
+    //         }
+
+    //         if ($currentMonth !== $month) {
+    //             if ($currentMonth !== null) {
+    //                 $monthlyRatings[] = number_format($runningTotal / $counter, 2);
+    //             }
+    //             $labels[] = $month;
+    //             $currentMonth = $month;
+    //         }
+    //     }
+    //     if ($currentMonth !== null && $counter > 0) {
+    //         $monthlyRatings[] = number_format($runningTotal / $counter, 2);
+    //     }
+    //     $currentMonthNumber = Carbon::now()->month;
+    //     while (count($monthlyRatings) < $currentMonthNumber) {
+    //         $monthlyRatings[] = end($monthlyRatings) ?: 0;
+    //     }
+    //     return $monthlyRatings;
+    // }
+    public function calculateQualityTrend(Collection $reviews, array $labels)
     {
-        $labels = [];
         $monthlyRatings = [];
         $runningTotal = 0;
         $counter = 0;
+        $previousAverage = 0; // Initialize previous month's average
 
+        foreach ($labels as $label) {
+            $hasReviews = false;
 
-        // $reviews = $school->professorReviews()
-        //     ->whereYear('date', $year)
-        //     ->orderBy('date')
-        //     ->get();
-        // $computerScienceProfessors = $school->professors()
-        //     ->where('department', 'Computer Science')
-
-        //     ->get();
-
-        // $professorIds = $computerScienceProfessors->pluck('id');
-
-        // $reviews = Review::whereIn('teacherId', $professorIds)
-        //     ->whereYear('date', $year)
-        //     ->orderBy('date')
-        //     ->get();
-
-        $currentMonth = null;
-        foreach ($reviews as $review) {
-            $month = Carbon::parse($review->date)->format('Y-m');
-            if ($review->qualityRating !== null) {
-                $runningTotal += (float)$review->qualityRating;
-                $counter++;
-            }
-
-            if ($currentMonth !== $month) {
-                if ($currentMonth !== null) {
-                    $monthlyRatings[] = $runningTotal / $counter;
+            foreach ($reviews as $review) {
+                $reviewMonth = Carbon::parse($review->date)->format('m');
+                if ($reviewMonth === $label && $review->qualityRating !== null) {
+                    $runningTotal += (float)$review->qualityRating;
+                    $counter++;
+                    $hasReviews = true;
                 }
-                $labels[] = $month;
-                $currentMonth = $month;
+            }
+
+            if ($hasReviews) {
+                $average = number_format($runningTotal / $counter, 2);
+                $monthlyRatings[] = $average;
+                $previousAverage = $average; // Update previous month's average
+            } else {
+                $monthlyRatings[] = $previousAverage; // Use previous average if no reviews
             }
         }
-        if ($currentMonth !== null && $counter > 0) {
-            $monthlyRatings[] = $runningTotal / $counter;
-        }
-        return [$labels, $monthlyRatings];
+
+        return $monthlyRatings;
     }
 }
+  // return [$labels, $monthlyRatings];
