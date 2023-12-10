@@ -18,6 +18,7 @@ export default {
                 "background-primary": "#161619",
                 "background-secondary": "#25262C",
                 "accent-primary": "#39C298",
+                "accent-secondary": "#F80053",
 
                 "electric-violet": "#3B37E5",
                 "gumball-pink": "#E6378B",
