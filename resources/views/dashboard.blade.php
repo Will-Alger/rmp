@@ -7,7 +7,6 @@
                     <div class="flex flex-wrap -m-4">
                             <div class="p-4 lg:w-full md:w-full sm:w-full">
                                 <div class="h-[30vh] p-6 bg-background-primary rounded shadow">
-                                    {{-- <h3 class="text-lg font-medium title-font mb-4 text-white">{{ $schoolName }}</h3> --}}
                                     {!! $schoolAverages->container() !!}
                                 </div>
                                 {!! $schoolAverages->script() !!}
@@ -16,16 +15,32 @@
                     <div class="mt-10">
                         <div class="flex flex-wrap -m-4">
                             <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
+                                <h3 class="text-xl font-medium title-font mb-4 text-white">English</h3>
+                                <div class="h-[30vh] p-4 bg-background-primary rounded shadow">
+                                    {!! $englishAverages->container() !!}
+                                </div>
+                                {!! $englishAverages->script() !!}
+                            </div>
+                            <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
+                                <h3 class="text-xl font-medium title-font mb-4 text-white">Mathematics</h3>
+                                <div class="h-[30vh] p-4 bg-background-primary rounded shadow">
+                                    {!! $mathematicsAverages->container() !!}
+                                </div>
+                                {!! $mathematicsAverages->script() !!}
+                            </div>
+                            <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
+                                <h3 class="text-xl font-medium title-font mb-4 text-white">Computer Science Department</h3>
                                 <div class="h-[30vh] p-4 bg-background-primary rounded shadow">
                                     {!! $computerScienceAverages->container() !!}
                                 </div>
                                 {!! $computerScienceAverages->script() !!}
                             </div>
                             <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
+                                <h3 class="text-xl font-medium title-font mb-4 text-white">History</h3>
                                 <div class="h-[30vh] p-4 bg-background-primary rounded shadow">
-                                    {!! $englishAverages->container() !!}
+                                    {!! $historyAverages->container() !!}
                                 </div>
-                                {!! $englishAverages->script() !!}
+                                {!! $historyAverages->script() !!}
                             </div>
                         </div>
                     </div>

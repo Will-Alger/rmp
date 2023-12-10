@@ -17,45 +17,28 @@ class QualityTrend extends Chart
      *
      * @return void
      */
-    public function __construct(Collection $schools, ?string $department = null)
+    public function __construct(Collection $schools, array $colors, ?string $department = null)
     {
         parent::__construct();
 
         $currentMonth = Carbon::now()->month;
-        $this->labels = collect(range(1, $currentMonth))->map(function ($month) {
-            return Carbon::createFromDate(null, $month, null)->format('m');
-        })->toArray();
-
         $labels = collect(range(1, $currentMonth))->map(function ($month) {
             return Carbon::createFromDate(null, $month, null)->format('m');
         })->toArray();
-
-        // $this->labels = collect($calculated_reviews[0])->map(function ($label) {
-        //     return Carbon::parse($label)->format('m');
-        // })->toArray();
+        $this->labels = $labels;
 
         $helper = new ReviewHelper();
+        $i = 0;
         foreach ($schools as $school) {
             $school_reviews = $helper->getReviews($school->id, 2023, $department);
             $calculated_reviews = $helper->calculateQualityTrend($school_reviews, $labels);
 
             $this->dataset($school->name, 'line', $calculated_reviews)
                 ->fill(true)
-                ->color($this->getRandomColor())
+                ->color($colors[$i])
                 ->options(['pointRadius' => 0]);
+            $i++;
         }
-
-
-
-
-
-        // $reviews = $calculated_reviews[1];
-
-        // $this->dataset("{$name}", 'line', $reviews)
-        //     ->fill(true)
-        //     ->color($dataColor ?? $this->getRandomColor())
-
-        //     ->options(['pointRadius' => 0]);
 
         $this->options([
             'legend' => [
@@ -63,7 +46,7 @@ class QualityTrend extends Chart
             ],
             'layout' => [
                 'padding' => [
-                    'left' => 5 // Adjust the number to increase or decrease padding
+                    'left' => 5
                 ],
             ],
             'scales' => [
@@ -82,34 +65,5 @@ class QualityTrend extends Chart
                 'intersect' => false,
             ],
         ]);
-    }
-
-    // private function getRandomColor()
-    // {
-    //     return '#' . substr(md5(rand()), 0, 6);
-    // }
-    private function getRandomColor()
-    {
-        // Randomly choose between color ranges for pink/red, blue, and purple
-        switch (rand(1, 3)) {
-            case 1: // Pink/Red
-                $red = rand(180, 255);
-                $green = rand(0, 100);
-                $blue = rand(0, 100);
-                break;
-            case 2: // Blue
-                $red = rand(0, 100);
-                $green = rand(0, 100);
-                $blue = rand(180, 255);
-                break;
-            case 3: // Purple
-                $red = rand(100, 255);
-                $green = rand(0, 80);
-                $blue = rand(100, 255);
-                break;
-        }
-
-        // Convert to hexadecimal and return
-        return sprintf("#%02x%02x%02x", $red, $green, $blue);
     }
 }
