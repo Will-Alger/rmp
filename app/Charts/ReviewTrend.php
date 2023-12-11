@@ -64,6 +64,7 @@ class ReviewTrend extends Chart
                         'ticks' => [
                             'min' => 1,
                             'max' => 5,
+                            'stepSize' => 1,
                         ],
                     ],
                 ],
