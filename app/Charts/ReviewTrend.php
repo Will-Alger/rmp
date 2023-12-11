@@ -33,7 +33,7 @@ class ReviewTrend extends Chart
                 $averageQualityRatings[] = $qualityRunningTotal / $temp;
                 $averageDifficultyRatings[] = $difficultyRunningTotal / $temp;
 
-                $labels[] = Carbon::parse($review->date)->format('Y-m');
+                $labels[] = Carbon::parse($review->date)->format('m-y');
             }
         });
 
@@ -41,29 +41,37 @@ class ReviewTrend extends Chart
 
         $this->dataset('Quality Trend', 'line', $averageQualityRatings)
             ->fill(true)
-            ->color('#3B37E5')
+            ->color('#39C298')
             ->options([
                 'pointRadius' => 0,
             ]);
 
         $this->dataset('Difficulty Trend', 'line', $averageDifficultyRatings)
             ->fill(true)
-            ->color('#E6378B')
+            ->color('#3B37E5')
             ->options([
                 'pointRadius' => 0,
             ]);
 
         $this->options([
-            'animation' => [
-                'easing' => 'easeInCubic',
-                'duration' => 2000,
-            ],
+            // 'animation' => [
+            //     'easing' => 'easeInCubic',
+            //     'duration' => 2000,
+            // ],
             'scales' => [
                 'yAxes' => [
                     [
                         'ticks' => [
                             'min' => 1,
                             'max' => 5,
+                            'stepSize' => 1,
+                        ],
+                    ],
+                ],
+                'xAxes' => [
+                    [
+                        'ticks' => [
+                            'maxTicksLimit' => 10,
                         ],
                     ],
                 ],
