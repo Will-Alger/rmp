@@ -8,10 +8,10 @@
                     x-model="selected"
                     @click="open = true"
                     class=" w-full form-input mt-1 block rounded max-h-60 overflow-auto shadow-lg"
-                    placeholder="{{ 'Search by ' . $searchType . ' name' . ' or id...'}}"
+                    placeholder="{{ 'Search by ' . $searchType . ' name'}}"
             >
         </label>
-
+{{--
         <div>
             <label class="inline-flex items-center mr-3 text-gray-300">
                 <input type="radio" class="form-radio" name="searchType" value="professor" wire:model.live="searchType">
@@ -22,7 +22,7 @@
                 <input type="radio" class="form-radio" name="searchType" value="school" wire:model.live="searchType">
                 <span class="ml-2">School</span>
             </label>
-        </div>
+        </div> --}}
 
         {{-- Display the search results --}}
         <div
