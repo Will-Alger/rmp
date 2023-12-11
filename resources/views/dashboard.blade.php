@@ -12,32 +12,32 @@
                                 {!! $schoolAverages->script() !!}
                             </div>
                     </div>
-                    <div class="mt-10">
+                    <div class="mt-5">
                         <div class="flex flex-wrap -m-4">
                             <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
                                 <h3 class="text-xl font-medium title-font mb-4 text-white">English</h3>
-                                <div class="h-[30vh] p-4 bg-background-primary rounded shadow">
+                                <div class="h-[50vh] p-4 bg-background-primary rounded shadow">
                                     {!! $englishAverages->container() !!}
                                 </div>
                                 {!! $englishAverages->script() !!}
                             </div>
                             <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
                                 <h3 class="text-xl font-medium title-font mb-4 text-white">Mathematics</h3>
-                                <div class="h-[30vh] p-4 bg-background-primary rounded shadow">
+                                <div class="h-[50vh] p-4 bg-background-primary rounded shadow">
                                     {!! $mathematicsAverages->container() !!}
                                 </div>
                                 {!! $mathematicsAverages->script() !!}
                             </div>
                             <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
                                 <h3 class="text-xl font-medium title-font mb-4 text-white">Computer Science Department</h3>
-                                <div class="h-[30vh] p-4 bg-background-primary rounded shadow">
+                                <div class="h-[50vh] p-4 bg-background-primary rounded shadow">
                                     {!! $computerScienceAverages->container() !!}
                                 </div>
                                 {!! $computerScienceAverages->script() !!}
                             </div>
                             <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
                                 <h3 class="text-xl font-medium title-font mb-4 text-white">History</h3>
-                                <div class="h-[30vh] p-4 bg-background-primary rounded shadow">
+                                <div class="h-[50vh] p-4 bg-background-primary rounded shadow">
                                     {!! $historyAverages->container() !!}
                                 </div>
                                 {!! $historyAverages->script() !!}

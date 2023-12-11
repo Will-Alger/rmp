@@ -53,6 +53,7 @@ class QualityTrend extends Chart
                 'yAxes' => [
                     [
                         'ticks' => [
+                            'stepSize' => 1,       // Display only integer values
                             'min' => 1,
                             'max' => 5,
                         ],
