@@ -1,7 +1,7 @@
 <div>
     <div x-data="{ open: false, selected: '' }" class="relative">
         <label>
-            <span class="text-lg font-semibold text-gray-700 shadow-lg"><p class="drop-shadow">Searching for {{$searchType}}s</p></span>
+            <span class="text-lg font-semibold text-gray-300 shadow-lg"><p class="drop-shadow">Searching for {{$searchType}}s</p></span>
             <input
                     wire:model.debounce.500ms.live="search"
                     x-ref="input"
@@ -13,12 +13,12 @@
         </label>
 
         <div>
-            <label class="inline-flex items-center mr-3">
+            <label class="inline-flex items-center mr-3 text-gray-300">
                 <input type="radio" class="form-radio" name="searchType" value="professor" wire:model.live="searchType">
                 <span class="ml-2">Professor</span>
             </label>
 
-            <label class="inline-flex items-center">
+            <label class="inline-flex items-center text-gray-300">
                 <input type="radio" class="form-radio" name="searchType" value="school" wire:model.live="searchType">
                 <span class="ml-2">School</span>
             </label>
@@ -45,9 +45,10 @@
                             <div>{{ $searchType === 'professor' ? $item->firstName . ' ' . $item->lastName : $item->name }}</div>
                             <div class="flex-grow"></div>
                             <div>
-                                <span class="inline-block bg-electric-violet text-white px-2 py-1 rounded text-sm"> {{ $item->numRatings }} Ratings</span>
                                 @if ($searchType === 'professor')
-                                    <span class="inline-block bg-electric-violet text-white px-2 py-1 rounded text-sm ml-2">{{ $item->schoolName }}</span>
+                                    <span class="inline-block bg-accent-primary text-white px-2 py-1 rounded text-sm ml-2">{{ $item->schoolName }}</span>
+                                @else
+                                    <span class="inline-block bg-accent-primary text-white px-2 py-1 rounded text-sm"> {{ $item->numRatings }} Ratings</span>
                                 @endif
                             </div>
                         </div>

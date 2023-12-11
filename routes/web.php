@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserSearchController;
 use App\Http\Controllers\ProfessorController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +18,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+Route::get('/', [LandingController::class, 'index']);
+
 
 Route::get('/search', [UserSearchController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -28,9 +31,10 @@ Route::get('professor/{professor}', [ProfessorController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('professor.show');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

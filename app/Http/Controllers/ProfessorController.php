@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\QualityTrend;
 use App\Models\Professor;
 use Illuminate\Http\Request;
 use App\Charts\ReviewTrend;
+use App\Helpers\ReviewHelper;
+use App\Models\School;
+use Illuminate\Support\Facades\Cache;
+
 
 class ProfessorController extends Controller
 {
@@ -37,71 +42,32 @@ class ProfessorController extends Controller
      */
     public function show(Professor $professor)
     {
-        $reviews = $professor->reviews()->orderByDesc('date')->paginate(10);
+        $helper = new ReviewHelper();
 
-        $labels = [];
-        $averageQualityRatings = [];
-        $averageDifficultyRatings = [];
-        $qualityRunningTotal = 0;
-        $difficultyRunningTotal = 0;
-        $counter = 1;
-
-        $professor->reviews()->orderBy('date')->chunk(200, function ($reviews) use (&$qualityRunningTotal, &$difficultyRunningTotal, &$counter, &$labels, &$averageQualityRatings, &$averageDifficultyRatings) {
-            foreach ($reviews as $review) {
-
-                $qualityRunningTotal += (float)$review->qualityRating;
-
-                $difficultyRunningTotal += (float)$review->difficultyRating;
-
-                $temp = $counter++;
-                $averageQualityRatings[] = $qualityRunningTotal / $temp;
-
-                $averageDifficultyRatings[] = $difficultyRunningTotal / $temp;
-
-
-                $labels[] = \Carbon\Carbon::parse($review->date)->format('Y-m');
-            }
+        $reviews = Cache::remember('reviews_' . $professor->id, 60, function () use ($professor) {
+            return $professor->reviews()->orderByDesc('date')->paginate(10);
         });
 
-        $chart = new ReviewTrend;
+        $chart = Cache::remember('chart_' . $professor->id, 60, function () use ($professor) {
+            return new ReviewTrend($professor);
+        });
 
-        $chart->labels($labels);
-        $qualityDataSet = $chart->dataset('Quality Trend', 'line', $averageQualityRatings)
-            ->fill(true)
-            ->options([
-                'pointRadius' => 0,
-            ]);
-        $qualityDataSet->color('#3B37E5');
+        $school = Cache::remember('school_' . $professor->schoolId, 60, function () use ($professor) {
+            return School::where('id', $professor->schoolId)->get();
+        });
 
-        $difficultyDataSet = $chart->dataset('Difficulty Trend', 'line', $averageDifficultyRatings)
-            ->fill(true)
-            ->options([
-                'pointRadius' => 0,
-            ]);
-        $difficultyDataSet->color('#E6378B');
+        // $schoolTrend = Cache::remember('schoolTrend_' . $professor->schoolId, 60, function () use ($school) {
+        //     return new QualityTrend($school, ['#6871FA']);
+        // });
 
-        $chart->options([
-            'animation' => [
-                'easing' => 'easeInCubic',
-                'duration' => 2000,
-            ],
-            'scales' => [
-                'yAxes' => [
-                    [
-                        'ticks' => [
-                            'min' => 1,
-                            'max' => 5,
-                        ]
-                    ]
-                ]
-            ],
-            'tooltips' => [
-                'mode' => 'index',
-                'intersect' => false,
-            ],
-        ]);
+        $departmentTrend = Cache::remember('departmentTrend_' . $professor->schoolId . '_' . $professor->department, 60, function () use ($helper, $professor, $school) {
+            return $helper->getReviews($professor->schoolId, 2023, $professor->department)->count() > 0
+                ? new QualityTrend($school, ['#6871FA'], $professor->department)
+                : null;
+        });
 
-        return view('professor.show', compact('professor', 'chart', 'reviews'));
+
+        return view('professor.show', compact('professor', 'chart', 'reviews', 'departmentTrend'));
     }
 
     /**
