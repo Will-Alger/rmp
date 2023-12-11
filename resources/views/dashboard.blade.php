@@ -6,7 +6,7 @@
                     <h2 class="text-2xl font-bold mb-4 text-white">Cumulative averages for top 6 rated schools in Kentucky in 2023</h2>
                     <div class="flex flex-wrap -m-4">
                             <div class="p-4 lg:w-full md:w-full sm:w-full">
-                                <div class="h-[30vh] p-6 bg-background-primary rounded shadow">
+                                <div class="h-[45vh] p-6 bg-background-primary rounded shadow">
                                     {!! $schoolAverages->container() !!}
                                 </div>
                                 {!! $schoolAverages->script() !!}

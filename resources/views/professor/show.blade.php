@@ -1,9 +1,9 @@
 <x-app-layout>
-    <div class="container mx-auto p-4 w-full lg:w-3/4">
-        <div class="bg-white shadow rounded-lg overflow-hidden">
+    <div class="container mx-auto m-4 w-full lg:w-3/4 max-w-5xl">
+        <div class="shadow rounded-lg overflow-hidden bg-background-primary shadow-2xl mt-10">
             <!-- Profile Header -->
-            <div class="px-4 py-5 sm:px-6 bg-gray-100">
-                <h2 class="text-2xl leading-6 font-bold text-gray-900">
+            <div class="px-4 py-5 sm:px-6">
+                <h2 class="text-2xl leading-6 font-bold text-white">
                     {{ $professor->firstName }} {{ $professor->lastName }}
                 </h2>
                 <p class="mt-1 text-base text-gray-500">
@@ -11,88 +11,77 @@
                 </p>
             </div>
 
-            <!-- Profile Body -->
-            <div class="border-t border-gray-200">
+            @php
+                 $metrics = [
+                    [
+                        'title' => 'Average Rating',
+                        'value' => $professor->avgQualityRating(),
+                        'max' => 5,
+                        'background' => 'bg-accent-primary'
+                    ],
+                    [
+                        'title' => 'Average Difficulty',
+                        'value' => $professor->avgDifficultyRating(),
+                        'max' => 5,
+                        'background' => 'bg-gumball-pink'
+                    ],
+                    [
+                        'title' => 'Would Take Again',
+                        'value' => $professor->avgWouldTakeAgain(),
+                        'max' => 100,
+                        'background' => 'bg-electric-violet'
+                    ]
+                ];
+            @endphp
+
+            <div class="border-t border-background-secondary">
                 <div class="px-4 py-5 sm:p-6">
                     <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
-                        <!-- Average Rating -->
-                        <div
-                            class="border-b sm:border-b-0 sm:border-r border-gray-200 p-4 flex flex-col justify-between">
-                            <dt class="text-sm font-medium text-gray-500">
-                                Average Rating
-                            </dt>
-                            <dd class="mt-1">
-                                <div class="bg-gray-200 rounded h-6 w-full overflow-hidden">
-                                    <div class="bg-electric-violet rounded h-6 flex justify-center items-center"
-                                         style="width: {{ $professor->avgQualityRating() / 5 * 100 }}%;">
-                                        <span class="text-xs font-medium text-white">
-                                            {{ $professor->avgQualityRating() }} / 5
-                                        </span>
+                        @foreach ($metrics as $metric)
+                            <div class="border-b sm:border-b-0 sm:border-r border-background-secondary p-4 flex flex-col justify-between">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    {{ $metric['title'] }}
+                                </dt>
+                                <dd class="mt-1">
+                                    <div class="bg-background-secondary rounded h-6 w-full overflow-hidden">
+                                        <div class="{{ $metric['background'] }} rounded h-6 flex justify-center items-center"
+                                             style="width: {{ $metric['value'] / $metric['max'] * 100 }}%;">
+                                            <span class="text-xs font-medium text-white">
+                                                {{ $metric['value'] }}{{ $metric['max'] === 5 ? ' / 5' : '%' }}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                            </dd>
-                        </div>
-
-                        <!-- Average Difficulty -->
-                        <div
-                            class="border-b sm:border-b-0 sm:border-r border-gray-200 p-4 flex flex-col justify-between">
-                            <dt class="text-sm font-medium text-gray-500">
-                                Average Difficulty
-                            </dt>
-                            <dd class="mt-1">
-                                <div class="bg-gray-200 rounded h-6 w-full overflow-hidden">
-                                    <div class="bg-gumball-pink rounded h-6 flex justify-center items-center"
-                                         style="width: {{ $professor->avgDifficultyRating() / 5 * 100 }}%;">
-                                        <span class="text-xs font-medium text-white">
-                                            {{ $professor->avgDifficultyRating() }} / 5
-                                        </span>
-                                    </div>
-                                </div>
-                            </dd>
-                        </div>
-
-                        <!-- Would Take Again -->
-                        <div class="p-4 flex flex-col justify-between">
-                            <dt class="text-sm font-medium text-gray-500">
-                                Would Take Again
-                            </dt>
-                            <dd class="mt-1">
-                                <div class="bg-gray-200 rounded h-6 w-full overflow-hidden">
-                                    <div class="bg-electric-violet rounded h-6 flex justify-center items-center"
-                                         style="width: {{ $professor->avgWouldTakeAgain() }}%;">
-                                        <span class="text-xs font-medium text-white">
-                                            {{ $professor->avgWouldTakeAgain() }}%
-                                        </span>
-                                    </div>
-                                </div>
-                            </dd>
-                        </div>
+                                </dd>
+                            </div>
+                        @endforeach
                     </dl>
                 </div>
             </div>
 
+            {{-- Professor chart --}}
             <div class="p-4 rounded shadow-lg flex">
-                <div class="w-1/2 h-[40vh] max-w-2xl p-4 bg-white rounded shadow">
+                <div class="w-full h-[40vh] p-4 secondary rounded shadow">
                     {!! $chart->container() !!}
                 </div>
             </div>
-
             {!! $chart->script() !!}
-
         </div>
 
         <!-- Reviews Section -->
         <div class="mt-8">
-            <h3 class="text-xl leading-6 font-bold text-gray-900">
+            <h3 class="text-xl leading-6 font-bold text-white">
                 Reviews
             </h3>
             @forelse ($reviews as $review)
-                <div class="bg-white shadow rounded-lg overflow-hidden my-4">
+                <div class="bg-background-primary shadow-2xl rounded-lg overflow-hidden my-10">
+                    <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
 
-                    <div class="px-4 py-5 sm:px-6 bg-gray-50 flex justify-between items-center">
-                        <h4 class="text-lg font-bold text-gray-800">
-                            Class: {{ $review->class }}
-                        </h4>
+                            <h4 class="text-lg font-bold text-gray-800">
+                                @if ($review->class)
+                                Class: {{ $review->class }}
+                                @endif
+                            </h4>
+
                         <p class="text-sm text-gray-600">
                             {{ \Carbon\Carbon::parse($review->date)->format('Y-m-d') }}
                         </p>
@@ -101,10 +90,9 @@
                     {{-- Quality Ratings --}}
                     <div class="px-4 sm:px-6">
                         <div class="flex items-end space-x-4 my-2">
-
                             <!-- Quality Rating Bar -->
                             <div class="text-center">
-                                <div class="bg-gray-200 w-8 h-16 rounded relative">
+                                <div class="bg-background-secondary w-8 h-16 rounded relative">
                                     <div class="bg-electric-violet w-full rounded absolute bottom-0"
                                          style="height: {{ ($review->qualityRating / 5) * 100 }}%">
                                         <span class="text-white text-xs">{{ $review->qualityRating }}</span>
@@ -115,7 +103,7 @@
 
                             <!-- Clarity Rating Bar -->
                             <div class="text-center">
-                                <div class="bg-gray-200 w-8 h-16 rounded relative">
+                                <div class="bg-background-secondary w-8 h-16 rounded relative">
                                     <div class="bg-electric-violet w-full rounded absolute bottom-0"
                                          style="height: {{ ($review->clarityRating / 5) * 100 }}%">
                                         <span class="text-white text-xs">{{ $review->clarityRating }}</span>
@@ -126,7 +114,7 @@
 
                             <!-- Difficulty Rating Bar -->
                             <div class="text-center">
-                                <div class="bg-gray-200 w-8 h-16 rounded relative">
+                                <div class="bg-background-secondary w-8 h-16 rounded relative">
                                     <div class="bg-gumball-pink w-full rounded absolute bottom-0"
                                          style="height: {{ ($review->difficultyRating / 5) * 100 }}%">
                                         <span class="text-white text-xs">{{ $review->difficultyRating }}</span>
@@ -137,7 +125,7 @@
 
                             <!-- Helpful Rating Bar -->
                             <div class="text-center">
-                                <div class="bg-gray-200 w-8 h-16 rounded relative">
+                                <div class="bg-background-secondary w-8 h-16 rounded relative">
                                     <div class="bg-electric-violet w-full rounded absolute bottom-0"
                                          style="height: {{ ($review->helpfulRating / 5) * 100 }}%">
                                         <span class="text-white text-xs">{{ $review->helpfulRating }}</span>
@@ -148,12 +136,12 @@
                         </div>
                     </div>
                     <div class="border-t border-gray-200 p-4">
-                        <p class="text-gray-700 mb-3 p-4">{{ $review->comment }}</p>
+                        <p class="text-gray-300 mb-3 p-4">{{ $review->comment }}</p>
                         @if (!empty($review->ratingTags))
                             <div class="flex flex-wrap gap-2 mb-2">
                                 @foreach(explode('--', $review->ratingTags) as $tag)
                                     <span
-                                        class="bg-blue-100 text-electric-violet text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+                                        class="bg-background-secondary shadow-l text-electric-violet text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
                                     {{ $tag }}
                                 </span>
                                 @endforeach
