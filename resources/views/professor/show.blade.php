@@ -62,7 +62,7 @@
 
 
             <div class="flex flex-wrap p-4 rounded">
-                <div class="{{$departmentTrend ? 'md:w-1/2 lg:w-1/2' : 'md:w-full lg:w-full'}} sm:w-full p-4 secondary rounded shadow">
+                <div class="{{$departmentTrend ? 'md:w-1/2 lg:w-1/2' : 'md:w-full lg:w-full'}} sm:w-full p-4 secondary rounded">
                     <h3 class="text-xl text-center font-medium title-font mb-4 text-white">Professor Rating History</h3>
                     <div class="h-[45vh]">
                         {!! $chart->container() !!}
@@ -70,7 +70,7 @@
                     {!! $chart->script() !!}
                 </div>
                 @if ($departmentTrend)
-                    <div class="sm:w-full md:w-1/2 lg:w-1/2 p-4 secondary rounded shadow">
+                    <div class="sm:w-full md:w-1/2 lg:w-1/2 p-4 secondary rounded">
                         <h3 class="text-xl text-center font-medium title-font mb-4 text-white">{{$professor->department}} Department Trend</h3>
                         <div class="h-[45vh]">
                             {!! $departmentTrend->container() !!}
