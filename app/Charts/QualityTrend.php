@@ -22,9 +22,11 @@ class QualityTrend extends Chart
         parent::__construct();
 
         $currentMonth = Carbon::now()->month;
+
         $labels = collect(range(1, $currentMonth))->map(function ($month) {
             return Carbon::createFromDate(null, $month, null)->format('m');
         })->toArray();
+
         $this->labels = $labels;
 
         $helper = new ReviewHelper();
@@ -53,7 +55,7 @@ class QualityTrend extends Chart
                 'yAxes' => [
                     [
                         'ticks' => [
-                            'stepSize' => 1,       // Display only integer values
+                            'stepSize' => 1,
                             'min' => 1,
                             'max' => 5,
                         ],

@@ -1,7 +1,7 @@
 <div>
     <div x-data="{ open: false, selected: '' }" class="relative">
         <label>
-            <span class="text-lg font-semibold text-gray-300 shadow-lg"><p class="drop-shadow">Searching for {{$searchType}}s</p></span>
+            <span class="text-lg font-semibold text-gray-900 shadow-lg"><p class="drop-shadow">Searching for {{$searchType}}s</p></span>
             <input
                     wire:model.debounce.500ms.live="search"
                     x-ref="input"

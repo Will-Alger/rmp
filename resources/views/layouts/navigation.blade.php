@@ -1,15 +1,15 @@
-<nav x-data="{ open: false }" class="bg-background-primary">
+<nav x-data="{ open: false }" class="bg-white">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link class="text-white" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link class="text-gray-900" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link class="text-white" :href="route('user_search')" :active="request()->routeIs('user_search')">
+                    <x-nav-link class="text-gray-900" :href="route('user_search')" :active="request()->routeIs('user_search')">
                         {{ __('Search') }}
                     </x-nav-link>
 
